@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f3bc6aba-7701-49be-8cbb-a773763febe3" name="Changes" comment="add base classes">
+    <list default="true" id="f3bc6aba-7701-49be-8cbb-a773763febe3" name="Changes" comment="add exceptions">
       <change beforePath="$PROJECT_DIR$/managers/ticket_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/managers/ticket_manager.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -92,13 +92,31 @@
       <option name="project" value="LOCAL" />
       <updated>1764260421061</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add class managment">
+      <option name="closed" value="true" />
+      <created>1764260973813</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1764260973813</updated>
+    </task>
+    <task id="LOCAL-00005" summary="add exceptions">
+      <option name="closed" value="true" />
+      <created>1764261133166</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1764261133166</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first commit" />
     <MESSAGE value="create structure" />
     <MESSAGE value="add base classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="add base classes" />
+    <MESSAGE value="add class managment" />
+    <MESSAGE value="add exceptions" />
+    <option name="LAST_COMMIT_MESSAGE" value="add exceptions" />
   </component>
 </project>

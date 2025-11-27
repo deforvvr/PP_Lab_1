@@ -1,4 +1,6 @@
 from models.ticket import Ticket
+from exceptions.ticket_not_found import TicketNotFoundError
+from exceptions.already_reserved import AlreadyReservedError
 
 class TicketManager:
 
@@ -15,7 +17,7 @@ class TicketManager:
             self.tickets.remove(ticket)
             print(f"Билет '{ticket.ticket_name}' удалён.")
         else:
-            print("Билет не найден.")
+            raise TicketNotFoundError(f"Билет с id {ticket_id} не найден.")
 
     def list_tickets(self):
         if not self.tickets:
@@ -34,10 +36,9 @@ class TicketManager:
     def reserve_ticket(self, ticket_id: int):
         ticket = self.get_ticket_by_id(ticket_id)
         if ticket:
-            if not ticket.is_reserved:
-                ticket.is_reserved = True
-                print(f"Билет '{ticket.ticket_name}' забронирован.")
-            else:
-                print(f"Билет '{ticket.ticket_name}' уже забронирован.")
+            if ticket.is_reserved:
+                raise AlreadyReservedError(f"Билет '{ticket.ticket_name}' уже забронирован.")
+            ticket.is_reserved = True
+            print(f"Билет '{ticket.ticket_name}' забронирован.")
         else:
-            print("Билет не найден.")
+            raise TicketNotFoundError(f"Билет с id {ticket_id} не найден.")

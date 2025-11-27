@@ -1,4 +1,5 @@
 from models.event import Event
+from exceptions.event_not_found import EventNotFoundError
 
 class EventManager:
 
@@ -15,7 +16,7 @@ class EventManager:
             self.events.remove(event)
             print(f"Мероприятие '{event.event_name}' удалено.")
         else:
-            print("Мероприятие не найдено.")
+            raise EventNotFoundError(f"Мероприятие с id {event_id} не найдено.")
 
     def list_events(self):
         if not self.events:

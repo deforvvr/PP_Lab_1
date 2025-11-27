@@ -1,4 +1,5 @@
 from models.user import User
+from exceptions.user_not_found import UserNotFoundError
 
 class UserManager:
 
@@ -15,7 +16,7 @@ class UserManager:
             self.users.remove(user)
             print(f"Пользователь '{user.username}' удалён.")
         else:
-            print("Пользователь не найден.")
+            raise UserNotFoundError(f"Пользователь с id {user_id} не найден.")
 
     def list_users(self):
         if not self.users:
