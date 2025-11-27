@@ -1,32 +1,26 @@
 from models.user import User
-from exceptions.user_not_found import UserNotFoundError
 
 class UserManager:
-
     def __init__(self):
         self.users = []
 
-    def add_user(self, user: User):
+    def add_user(self, username, email):
+        user_id = len(self.users) + 1
+        user = User(user_id, username, email)
         self.users.append(user)
-        print(f"Пользователь '{user.username}' добавлен.")
+        return user
 
-    def remove_user(self, user_id: int):
-        user = self.get_user_by_id(user_id)
-        if user:
-            self.users.remove(user)
-            print(f"Пользователь '{user.username}' удалён.")
-        else:
-            raise UserNotFoundError(f"Пользователь с id {user_id} не найден.")
+    def delete_user(self, user_id):
+        self.users = [u for u in self.users if u.user_id != user_id]
 
-    def list_users(self):
-        if not self.users:
-            print("Список пользователей пуст.")
-            return
-        for user in self.users:
-            print(f"{user.user_id}: {user.username} ({user.email})")
+    def get_user_by_id(self, user_id):
+        for u in self.users:
+            if u.user_id == user_id:
+                return u
+        return None
 
-    def get_user_by_id(self, user_id: int):
-        for user in self.users:
-            if user.user_id == user_id:
-                return user
+    def get_user_by_name(self, username):
+        for u in self.users:
+            if u.username == username:
+                return u
         return None

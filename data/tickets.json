@@ -1,0 +1,16 @@
+[
+    {
+        "ticket_id": 1,
+        "ticket_name": "Концерт",
+        "event_date": "2025-12-05",
+        "price": 100,
+        "is_reserved": true
+    },
+    {
+        "ticket_id": 2,
+        "ticket_name": "Театр",
+        "event_date": "2025-12-10",
+        "price": 150,
+        "is_reserved": false
+    }
+]

@@ -1,39 +1,62 @@
 import xml.etree.ElementTree as ET
+from typing import List, Type
 
-
-class FileHandlerXML:
-
+class XmlHandler:
     def __init__(self, filename: str):
         self.filename = filename
 
-    def save_data(self, data: list, root_name: str = "data", item_name: str = "item"):
+    def save_data(self, list_of_objects: List):
+        root_name = self._get_root_name(list_of_objects)
         root = ET.Element(root_name)
-        for obj in data:
-            item_elem = ET.SubElement(root, item_name)
+
+        for obj in list_of_objects:
+            obj_elem = ET.SubElement(root, obj.__class__.__name__)
             for key, value in obj.__dict__.items():
-                child = ET.SubElement(item_elem, key)
-                child.text = str(value)
+                if hasattr(value, "__dict__"):
+                    # Сериализуем вложенные объекты
+                    sub_elem = ET.SubElement(obj_elem, key)
+                    for sub_key, sub_value in value.__dict__.items():
+                        child = ET.SubElement(sub_elem, sub_key)
+                        child.text = str(sub_value)
+                else:
+                    child = ET.SubElement(obj_elem, key)
+                    child.text = str(value)
+
         tree = ET.ElementTree(root)
         tree.write(self.filename, encoding="utf-8", xml_declaration=True)
-        print(f"Данные сохранены в {self.filename}")
 
-    def load_data(self, cls, root_name: str = "data", item_name: str = "item"):
+    def load_data(self, cls: Type):
         try:
             tree = ET.parse(self.filename)
-            root = tree.getroot()
-            result = []
-            for item_elem in root.findall(item_name):
-                kwargs = {child.tag: self._convert_type(child.text) for child in item_elem}
-                result.append(cls(**kwargs))
-            return result
         except FileNotFoundError:
-            print(f"Файл {self.filename} не найден, возвращаем пустой список.")
             return []
 
-    def _convert_type(self, value):
-        for cast in (int, float):
-            try:
-                return cast(value)
-            except ValueError:
-                continue
-        return value
+        root = tree.getroot()
+        objects = []
+
+        for obj_elem in root:
+            data = {}
+            for field in obj_elem:
+                if list(field):  # вложенный объект
+                    sub_data = {sub.tag: self._convert_value(sub.text) for sub in field}
+                    data[field.tag] = cls.__annotations__.get(field.tag, object)(**sub_data)
+                else:
+                    data[field.tag] = self._convert_value(field.text)
+            objects.append(cls(**data))
+        return objects
+
+    def _convert_value(self, value):
+        # Пробуем преобразовать к int или float, иначе оставляем str
+        if value is None:
+            return None
+        try:
+            if '.' in value:
+                return float(value)
+            return int(value)
+        except ValueError:
+            return value
+
+    def _get_root_name(self, list_of_objects):
+        if not list_of_objects:
+            return "Data"
+        return list_of_objects[0].__class__.__name__ + "s"

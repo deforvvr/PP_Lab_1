@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Tickets><Ticket><ticket_id>1</ticket_id><ticket_name>Концерт</ticket_name><event_date>2025-12-05</event_date><price>100</price><is_reserved>True</is_reserved></Ticket><Ticket><ticket_id>2</ticket_id><ticket_name>Театр</ticket_name><event_date>2025-12-10</event_date><price>150</price><is_reserved>False</is_reserved></Ticket></Tickets>

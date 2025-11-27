@@ -1,34 +1,26 @@
 from models.booking import Booking
-from exceptions.booking_not_found import BookingNotFoundError
-from exceptions.already_reserved import AlreadyReservedError
 
 class BookingManager:
-
     def __init__(self):
         self.bookings = []
 
-    def add_booking(self, booking: Booking):
-        if booking.ticket.is_reserved:
-            raise AlreadyReservedError(f"Билет '{booking.ticket.ticket_name}' уже забронирован.")
-        booking.ticket.is_reserved = True
+    def add_booking(self, user, ticket):
+        if ticket.is_reserved:
+            return None
+        booking_id = len(self.bookings) + 1
+        booking = Booking(booking_id, user, ticket)
         self.bookings.append(booking)
-        print(f"Бронирование #{booking.booking_id} добавлено: {booking.user.username} -> {booking.ticket.ticket_name}")
+        ticket.is_reserved = True
+        return booking
 
-    def list_bookings(self):
-        if not self.bookings:
-            print("Список бронирований пуст.")
-            return
-        for booking in self.bookings:
-            print(f"{booking.booking_id}: {booking.user.username} забронировал '{booking.ticket.ticket_name}'")
+    def delete_booking(self, booking_id):
+        for b in self.bookings:
+            if b.booking_id == booking_id:
+                b.ticket.is_reserved = False
+        self.bookings = [b for b in self.bookings if b.booking_id != booking_id]
 
-    def get_booking_by_id(self, booking_id: int):
-        for booking in self.bookings:
-            if booking.booking_id == booking_id:
-                return booking
-        raise BookingNotFoundError(f"Бронирование с id {booking_id} не найдено.")
-
-    def remove_booking(self, booking_id: int):
-        booking = self.get_booking_by_id(booking_id)
-        self.bookings.remove(booking)
-        booking.ticket.is_reserved = False
-        print(f"Бронирование #{booking.booking_id} удалено.")
+    def get_booking(self, user, ticket):
+        for b in self.bookings:
+            if b.user == user and b.ticket == ticket:
+                return b
+        return None

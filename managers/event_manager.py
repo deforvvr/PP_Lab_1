@@ -1,32 +1,23 @@
 from models.event import Event
-from exceptions.event_not_found import EventNotFoundError
 
 class EventManager:
-
     def __init__(self):
         self.events = []
 
-    def add_event(self, event: Event):
+    def add_event(self, event_name, event_date):
+        event_id = len(self.events) + 1
+        event = Event(event_id, event_name, event_date)
         self.events.append(event)
-        print(f"Мероприятие '{event.event_name}' добавлено.")
+        return event
 
-    def remove_event(self, event_id: int):
-        event = self.get_event_by_id(event_id)
-        if event:
-            self.events.remove(event)
-            print(f"Мероприятие '{event.event_name}' удалено.")
-        else:
-            raise EventNotFoundError(f"Мероприятие с id {event_id} не найдено.")
+    def get_event_by_id(self, event_id):
+        for e in self.events:
+            if e.event_id == event_id:
+                return e
+        return None
 
-    def list_events(self):
-        if not self.events:
-            print("Список мероприятий пуст.")
-            return
-        for event in self.events:
-            print(f"{event.event_id}: {event.event_name} ({event.event_date})")
-
-    def get_event_by_id(self, event_id: int):
-        for event in self.events:
-            if event.event_id == event_id:
-                return event
+    def get_event_by_name(self, event_name):
+        for e in self.events:
+            if e.event_name == event_name:
+                return e
         return None

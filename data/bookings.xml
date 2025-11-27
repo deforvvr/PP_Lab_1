@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Bookings><Booking><booking_id>1</booking_id><user><user_id>1</user_id><username>Egor</username><email>egor@example.com</email></user><ticket><ticket_id>1</ticket_id><ticket_name>Концерт</ticket_name><event_date>2025-12-05</event_date><price>100</price><is_reserved>True</is_reserved></ticket></Booking></Bookings>
